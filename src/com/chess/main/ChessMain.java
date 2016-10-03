@@ -1,33 +1,10 @@
 package com.chess.main;
 
-//
-//import javax.swing.JFrame;
-//
-//import com.chess.ui.UserInterface;
-//
-//public class ChessMain {
-//
-//	public static void main(String[] args) {
-//
-//
-//		JFrame frame = new JFrame("Chess");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		
-//		UserInterface ui = new UserInterface();
-//		
-//		frame.add(ui);
-//		frame.setSize(500, 500);
-//		frame.setVisible(true);
-//
-//	}
-//	
-//}
-import java.util.Random;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import com.chess.ui.UserInterface;
+import com.chess.ui.BoardController;
+import com.chess.ui.BoardView;
 
 public class ChessMain {
 
@@ -37,10 +14,12 @@ public class ChessMain {
 
 			@Override
 			public void run() {
-				UserInterface cg = new UserInterface();
+				//BoardView cg = new BoardView();
+				BoardController controller = new BoardController();
+				controller.init();
 
 				JFrame f = new JFrame("ChessChamp");
-				f.add(cg.getGui());
+				f.add(controller.getGui());
 				// Ensures JVM closes after frame(s) closed and
 				// all non-daemon threads are finished
 				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
