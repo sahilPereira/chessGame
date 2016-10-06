@@ -11,6 +11,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -37,6 +39,7 @@ public class BoardView extends JPanel {
 	private static final String COLS = "ABCDEFGH";
 	private Action newGameAction = null;
 	private final BoardController controller = new BoardController();
+	private List<Location> litLocations;
 
 //	public BoardView() {
 //		initializeGui();
@@ -44,6 +47,7 @@ public class BoardView extends JPanel {
 
 	public BoardView(Action newGameAction) {
 		this.newGameAction = newGameAction;
+		this.setLitLocations(new ArrayList<Location>());
 	}
 
 	// TODO: might refactor the functional buttons out to BoardController
@@ -128,7 +132,8 @@ public class BoardView extends JPanel {
 				}else {
 					b.setBackground(Color.BLACK);
 				}
-				chessBoardSquares[jj][ii] = b;
+//				chessBoardSquares[jj][ii] = b;
+				chessBoardSquares[ii][jj] = b;
 			}
 		}
 
@@ -147,7 +152,8 @@ public class BoardView extends JPanel {
 				case 0:
 					chessBoard.add(new JLabel("" + (9 - (ii + 1)), SwingConstants.CENTER));
 				default:
-					chessBoard.add(chessBoardSquares[jj][ii]);
+//					chessBoard.add(chessBoardSquares[jj][ii]);
+					chessBoard.add(chessBoardSquares[ii][jj]);
 				}
 			}
 		}
@@ -183,29 +189,29 @@ public class BoardView extends JPanel {
 		message.setText("Make your move!");
 		// set up the black pieces
 		for (int ii = 0; ii < BoardModel.STARTING_ROW.length; ii++) {
-			chessBoardSquares[ii][0].setIcon(new ImageIcon(chessPieceImages[BoardModel.BLACK][BoardModel.STARTING_ROW[ii]]));
-			chessBoardSquares[ii][0].setName(Integer.toString(BoardModel.STARTING_ROW[ii]));
-			chessBoardSquares[ii][0].setActionCommand(Location.toString(new Location(0, ii)));
-			chessBoardSquares[ii][0].addActionListener(controller);
+			chessBoardSquares[0][ii].setIcon(new ImageIcon(chessPieceImages[BoardModel.BLACK][BoardModel.STARTING_ROW[ii]]));
+			chessBoardSquares[0][ii].setName(Integer.toString(BoardModel.STARTING_ROW[ii]));
+			chessBoardSquares[0][ii].setActionCommand(Location.toString(new Location(0, ii)));
+			chessBoardSquares[0][ii].addActionListener(controller);
 		}
 		for (int ii = 0; ii < BoardModel.STARTING_ROW.length; ii++) {
-			chessBoardSquares[ii][1].setIcon(new ImageIcon(chessPieceImages[BoardModel.BLACK][BoardModel.PAWN]));
-			chessBoardSquares[ii][1].setName(Integer.toString(BoardModel.PAWN));
-			chessBoardSquares[ii][1].setActionCommand(Location.toString(new Location(1, ii)));
-			chessBoardSquares[ii][1].addActionListener(controller);
+			chessBoardSquares[1][ii].setIcon(new ImageIcon(chessPieceImages[BoardModel.BLACK][BoardModel.PAWN]));
+			chessBoardSquares[1][ii].setName(Integer.toString(BoardModel.PAWN));
+			chessBoardSquares[1][ii].setActionCommand(Location.toString(new Location(1, ii)));
+			chessBoardSquares[1][ii].addActionListener(controller);
 		}
 		// set up the white pieces
 		for (int ii = 0; ii < BoardModel.STARTING_ROW.length; ii++) {
-			chessBoardSquares[ii][6].setIcon(new ImageIcon(chessPieceImages[BoardModel.WHITE][BoardModel.PAWN]));
-			chessBoardSquares[ii][6].setName(Integer.toString(BoardModel.PAWN));
-			chessBoardSquares[ii][6].setActionCommand(Location.toString(new Location(6, ii)));
-			chessBoardSquares[ii][6].addActionListener(controller);
+			chessBoardSquares[6][ii].setIcon(new ImageIcon(chessPieceImages[BoardModel.WHITE][BoardModel.PAWN]));
+			chessBoardSquares[6][ii].setName(Integer.toString(BoardModel.PAWN));
+			chessBoardSquares[6][ii].setActionCommand(Location.toString(new Location(6, ii)));
+			chessBoardSquares[6][ii].addActionListener(controller);
 		}
 		for (int ii = 0; ii < BoardModel.STARTING_ROW.length; ii++) {
-			chessBoardSquares[ii][7].setIcon(new ImageIcon(chessPieceImages[BoardModel.WHITE][BoardModel.STARTING_ROW[ii]]));
-			chessBoardSquares[ii][7].setName(Integer.toString(BoardModel.STARTING_ROW[ii]));
-			chessBoardSquares[ii][7].setActionCommand(Location.toString(new Location(7, ii)));
-			chessBoardSquares[ii][7].addActionListener(controller);
+			chessBoardSquares[7][ii].setIcon(new ImageIcon(chessPieceImages[BoardModel.WHITE][BoardModel.STARTING_ROW[ii]]));
+			chessBoardSquares[7][ii].setName(Integer.toString(BoardModel.STARTING_ROW[ii]));
+			chessBoardSquares[7][ii].setActionCommand(Location.toString(new Location(7, ii)));
+			chessBoardSquares[7][ii].addActionListener(controller);
 		}
 	}
 	
@@ -223,5 +229,34 @@ public class BoardView extends JPanel {
 				}
 			}
 		}
+	}
+	
+	public void highlightTiles(List<Location> locations){
+		// unhighlight old buttons
+		unhighlightLocations();
+		litLocations.clear();
+		for(Location local : locations){
+			JButton button = chessBoardSquares[local.row][local.column];
+			button.setBackground(Color.GREEN);
+			litLocations.add(local);
+		}
+	}
+	
+	private void unhighlightLocations(){
+		for(Location local : litLocations){
+			if(isBackgroundWhite(local.row, local.column)){
+				chessBoardSquares[local.row][local.column].setBackground(Color.WHITE);
+			} else{
+				chessBoardSquares[local.row][local.column].setBackground(Color.BLACK);
+			}
+		}
+	}
+	
+	public List<Location> getLitLocations() {
+		return litLocations;
+	}
+
+	public void setLitLocations(List<Location> litLocations) {
+		this.litLocations = litLocations;
 	}
 }

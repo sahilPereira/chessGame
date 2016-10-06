@@ -3,17 +3,21 @@ package com.chess.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import com.chess.pieces.Piece;
+
 public class BoardController implements ActionListener {
 
 	private static JButton oldBtnEvent = null;
 	private static Color oldColor = null;
-	private BoardView view = null;
+	private static BoardView view;
+	private static BoardModel model;
 	private Action newGameAction = new AbstractAction("New") {
 		private static final long serialVersionUID = 1L;
 		@Override
@@ -27,8 +31,12 @@ public class BoardController implements ActionListener {
 	}
 
 	public void init() {
+		model = new BoardModel();
 		view = new BoardView(newGameAction);
+		// init the UI (Just for visual and user input)
 		view.initializeGui();
+		// init the data model (for keeping track of pieces)
+		model.initBoardModel();
 	}
 	
 	public JComponent getGui(){
@@ -52,13 +60,23 @@ public class BoardController implements ActionListener {
 			oldColor = jButton.getBackground();
 
 			// change color
-			highlightLegalMoves();
 			jButton.setBackground(Color.GREEN);
+			highlightLegalMoves(Location.toLocation(jButton.getActionCommand()));
 		}
 	}
 
-	private void highlightLegalMoves() {
-		// TODO Auto-generated method stub
-
+	private void highlightLegalMoves(Location location) {
+		// recognize the piece using the chessBoard in the model
+		List<Location> moves = Piece.getMoves(BoardModel.chessBoard[location.row][location.column]);
+		System.out.println(moves.size());
+		view.highlightTiles(moves);
+//		for(Location local : moves){
+//			System.out.println(Location.toString(local));			
+//		}
+		// call the getMoves for that particular piece
+		// remove any moves that cannot be made referencing the current configuration
+		// display possible move locations to user
+		
+		// Extra: highlight opponent pieces as red
 	}
 }
