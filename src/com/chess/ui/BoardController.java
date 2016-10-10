@@ -20,7 +20,6 @@ public class BoardController implements ActionListener {
 	private static BoardModel model;
 	private Action newGameAction = new AbstractAction("New") {
 		private static final long serialVersionUID = 1L;
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.clearGame();
 			view.setupNewGame();
@@ -43,7 +42,6 @@ public class BoardController implements ActionListener {
 		return view.getGui();
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent event) {
 		Object chessObj = event.getSource();
 		if (chessObj instanceof JButton) {

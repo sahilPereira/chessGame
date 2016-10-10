@@ -19,17 +19,16 @@ public class Piece {
 		switch (piece.id) {
 		case BoardModel.ROOK:
 			Rook rook = (Rook)piece;
-//			return rook.getMoves()
-			break;
+			return rook.getMoves();
 		case BoardModel.KNIGHT:
 			Knight knight = (Knight)piece;
 			return knight.getMoves();
 		case BoardModel.BISHOP:
 			Bishop bishop = (Bishop)piece;
-			break;
+			return bishop.getMoves();
 		case BoardModel.KING:
 			King king = (King)piece;
-			break;
+			return king.getMoves();
 		case BoardModel.QUEEN:
 			Queen queen = (Queen)piece;
 			break;

@@ -19,7 +19,7 @@ public class Knight extends Piece {
 	}
 
 	/**
-	 * The legal moves that this Pawn can take on the board. Returns an array of
+	 * The legal moves that this Knight can take on the board. Returns an array of
 	 * locations on the board
 	 * 
 	 * return Location[]
