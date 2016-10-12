@@ -7,15 +7,8 @@ import com.chess.ui.Location;
 
 public class Knight extends Piece {
 
-	private Location location;
-
-	public Knight(int id, boolean isWhite) {
-		super(id, isWhite);
-	}
-
 	public Knight(int id, boolean isWhite, Location location) {
-		super(id, isWhite);
-		this.setLocation(location);
+		super(id, isWhite, location);
 	}
 
 	/**
@@ -43,29 +36,4 @@ public class Knight extends Piece {
 		}
 		return moves;
 	}
-
-	private int changeRow(int dRow) {
-		return isWhite ? location.row - dRow : location.row + dRow;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	// TODO change
-	private boolean isLegalMove(Location newLocation) {
-		if (newLocation == null) {
-			return false;
-		}
-		if(isOnBoard(newLocation)){
-			Piece pieceOnBoard = getPieceOnBoard(newLocation);
-			return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;			
-		}
-		return false;
-	}
-
 }

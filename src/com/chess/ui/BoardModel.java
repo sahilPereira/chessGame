@@ -13,8 +13,9 @@ public class BoardModel {
 	public static final int[] STARTING_ROW = { ROOK, KNIGHT, BISHOP, KING, QUEEN, BISHOP, KNIGHT, ROOK };
 	public static final int BLACK = 0, WHITE = 1;
 	public static final int ROW_LIMIT = 7, COLUMN_LIMIT = 7;
-
+	
 	public static Piece[][] chessBoard = null;
+	private static Piece currentPiece = null;
 
 	public BoardModel() {
 		chessBoard = new Piece[ROW_LIMIT + 1][COLUMN_LIMIT + 1];
@@ -62,5 +63,27 @@ public class BoardModel {
 			chessBoard[row][col] = new Pawn(PAWN, isWhite, location);
 			break;
 		}
+	}
+
+	public static Piece getCurrentPiece() {
+		return currentPiece;
+	}
+
+	public static void setCurrentPiece(Piece currentPiece) {
+		BoardModel.currentPiece = currentPiece;
+	}
+	
+	public void updateCurrentPiece(Location location){
+		Location oldLocation = currentPiece.location;
+		chessBoard[oldLocation.row][oldLocation.column] = null;
+		currentPiece.location = location;
+		chessBoard[location.row][location.column] = currentPiece;
+		
+		if(currentPiece.id == PAWN){
+			Pawn pawn = (Pawn)currentPiece;
+			pawn.setIsMoved(true);
+		}
+		// reset for next selection
+		currentPiece = null;
 	}
 }

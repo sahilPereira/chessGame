@@ -7,17 +7,9 @@ import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
 public class Rook extends Piece{
-
-	private Location location;
 	
 	public Rook(int id, boolean isWhite, Location location){
-		super(id, isWhite);
-		this.setLocation(location);
-	}
-	
-	public Rook(int id, boolean isWhite) {
-		super(id, isWhite);
-		// TODO Auto-generated constructor stub
+		super(id, isWhite, location);
 	}
 
 	public Location getLocation() {
@@ -70,7 +62,7 @@ public class Rook extends Piece{
 			}
 		}
 		// left
-		for(int i = location.column-1; i<=0; i--){
+		for(int i = location.column-1; i>=0; i--){
 			Location newLocation = new Location(changeRow(0), i);
 			if (!isLegalMove(newLocation)) {
 				break;
@@ -81,25 +73,5 @@ public class Rook extends Piece{
 			}
 		}
 		return moves;
-	}
-
-	private boolean isOpponentPiece(Location newLocation) {
-		Piece pieceOnBoard = getPieceOnBoard(newLocation);
-		return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;			
-	}
-
-	private int changeRow(int dRow) {
-		return isWhite ? location.row - dRow : location.row + dRow;
-	}
-	
-	private boolean isLegalMove(Location newLocation) {
-		if (newLocation == null) {
-			return false;
-		}
-		if(isOnBoard(newLocation)){
-			Piece pieceOnBoard = getPieceOnBoard(newLocation);
-			return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;			
-		}
-		return false;
 	}
 }

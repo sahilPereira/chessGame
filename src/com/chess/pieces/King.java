@@ -6,17 +6,9 @@ import java.util.List;
 import com.chess.ui.Location;
 
 public class King extends Piece{
-
-	private Location location;
 	
-	public King(int id, boolean isWhite) {
-		super(id, isWhite);
-		// TODO Auto-generated constructor stub
-	}
-
 	public King(int id, boolean isWhite, Location location){
-		super(id, isWhite);
-		this.setLocation(location);
+		super(id, isWhite, location);
 	}
 
 	public Location getLocation() {
@@ -53,13 +45,10 @@ public class King extends Piece{
 		return moves;
 	}
 
-	private int changeRow(int dRow) {
-		return isWhite ? location.row - dRow : location.row + dRow;
-	}
-
 	// TODO: need to include logic to detect if we are allowed to move to a 
 	// "dangerous" position
-	private boolean isLegalMove(Location newLocation) {
+	@Override
+	public boolean isLegalMove(Location newLocation) {
 		if (newLocation == null) {
 			return false;
 		}
@@ -69,5 +58,4 @@ public class King extends Piece{
 		}
 		return false;
 	}
-
 }

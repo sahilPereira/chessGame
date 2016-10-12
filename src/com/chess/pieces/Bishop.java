@@ -6,17 +6,9 @@ import java.util.List;
 import com.chess.ui.Location;
 
 public class Bishop extends Piece{
-
-	private Location location;
-	
-	public Bishop(int id, boolean isWhite) {
-		super(id, isWhite);
-		// TODO Auto-generated constructor stub
-	}
 	
 	public Bishop(int id, boolean isWhite, Location location){
-		super(id, isWhite);
-		this.setLocation(location);
+		super(id, isWhite, location);
 	}
 
 	public Location getLocation() {
@@ -56,37 +48,5 @@ public class Bishop extends Piece{
 			dx++;
 		}
 		return moves;
-	}
-
-	private boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
-		Location newLocation = new Location(changeRow(dRow), location.column+dCol);
-		if (!isLegalMove(newLocation)) {
-			return false;
-		}
-		moves.add(newLocation);
-		if(isOpponentPiece(newLocation)){
-			return false;
-		}
-		return true;
-	}
-
-	private boolean isOpponentPiece(Location newLocation) {
-		Piece pieceOnBoard = getPieceOnBoard(newLocation);
-		return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;			
-	}
-
-	private int changeRow(int dRow) {
-		return isWhite ? location.row - dRow : location.row + dRow;
-	}
-	
-	private boolean isLegalMove(Location newLocation) {
-		if (newLocation == null) {
-			return false;
-		}
-		if(isOnBoard(newLocation)){
-			Piece pieceOnBoard = getPieceOnBoard(newLocation);
-			return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;			
-		}
-		return false;
 	}
 }

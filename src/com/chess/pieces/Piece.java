@@ -1,5 +1,6 @@
 package com.chess.pieces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chess.ui.BoardModel;
@@ -9,13 +10,18 @@ public class Piece {
 	
 	public int id;
 	public boolean isWhite;
+	public Location location;
 	
-	public Piece(int id, boolean isWhite){
+	public Piece(int id, boolean isWhite, Location location){
 		this.id = id;
 		this.isWhite = isWhite;
+		this.location = location;
 	}
 	
 	public static List<Location> getMoves(Piece piece){
+		if(piece == null){
+			return new ArrayList<Location>();
+		}
 		switch (piece.id) {
 		case BoardModel.ROOK:
 			Rook rook = (Rook)piece;
@@ -31,11 +37,12 @@ public class Piece {
 			return king.getMoves();
 		case BoardModel.QUEEN:
 			Queen queen = (Queen)piece;
-			break;
+			return queen.getMoves();
 		case BoardModel.PAWN:
 			Pawn pawn = (Pawn)piece;
 			return pawn.getMoves();
 		}
+		// should never get here
 		return null;
 	}
 
@@ -49,5 +56,38 @@ public class Piece {
 	public boolean isOnBoard(Location location){
 		return(location.row >= 0 && location.row <= BoardModel.ROW_LIMIT)
 				&& (location.column >= 0 && location.column <= BoardModel.COLUMN_LIMIT);
+	}
+
+	public int changeRow(int dRow) {
+		return this.isWhite ? this.location.row - dRow : this.location.row + dRow;
+	}
+	
+	public boolean isLegalMove(Location newLocation) {
+		if (newLocation == null) {
+			return false;
+		}
+		if(isOnBoard(newLocation)){
+			Piece pieceOnBoard = getPieceOnBoard(newLocation);
+			// "this" refers to the instantiated object, not necessarily this particular class
+			return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;
+		}
+		return false;
+	}
+	
+	public boolean isOpponentPiece(Location newLocation) {
+		Piece pieceOnBoard = getPieceOnBoard(newLocation);
+		return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;			
+	}
+	
+	public boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
+		Location newLocation = new Location(changeRow(dRow), location.column+dCol);
+		if (!isLegalMove(newLocation)) {
+			return false;
+		}
+		moves.add(newLocation);
+		if(isOpponentPiece(newLocation)){
+			return false;
+		}
+		return true;
 	}
 }
