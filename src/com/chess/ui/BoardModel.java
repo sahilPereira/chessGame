@@ -1,5 +1,7 @@
 package com.chess.ui;
 
+import java.awt.Color;
+
 import com.chess.pieces.Bishop;
 import com.chess.pieces.King;
 import com.chess.pieces.Knight;
@@ -41,6 +43,10 @@ public class BoardModel {
 			fillChessBoard(7, i, STARTING_ROW[i], true, location);
 		}
 	}
+	
+	public void clearChessBoard(){
+		chessBoard = new Piece[ROW_LIMIT + 1][COLUMN_LIMIT + 1];
+	}
 
 	private void fillChessBoard(int row, int col, int id, boolean isWhite, Location location) {
 		switch (id) {
@@ -79,7 +85,7 @@ public class BoardModel {
 		currentPiece.location = location;
 		chessBoard[location.row][location.column] = currentPiece;
 		
-		if(currentPiece.id == PAWN){
+		if(currentPiece.id == PAWN && !oldLocation.equals(location)){
 			Pawn pawn = (Pawn)currentPiece;
 			pawn.setIsMoved(true);
 		}

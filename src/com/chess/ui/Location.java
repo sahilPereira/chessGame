@@ -22,4 +22,22 @@ public class Location {
 	public static String toString(Location location){
 		return location.row+";"+location.column;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!Location.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    final Location other = (Location) obj;
+	    if (this.row != other.row){
+	        return false;
+	    }
+	    if (this.column != other.column) {
+	        return false;
+	    }
+	    return true;
+	}
 }

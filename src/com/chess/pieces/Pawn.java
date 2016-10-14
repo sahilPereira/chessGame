@@ -24,24 +24,23 @@ public class Pawn extends Piece {
 		// use the BoardModel to determine legal moves
 		// TODO: determine if there are other pieces on the position to move
 		List<Location> moves = new ArrayList<Location>();
+		// piece ahead
+		Location newLocation = new Location(changeRow(1), location.column);
+		if (isLegalMove(newLocation)) {
+			moves.add(newLocation);
+		}
+		// piece diagonal
+		newLocation = new Location(changeRow(1), location.column + 1);
+		if (isLegalMove(newLocation)) {
+			moves.add(newLocation);
+		}
+		newLocation = new Location(changeRow(1), location.column - 1);
+		if (isLegalMove(newLocation)) {
+			moves.add(newLocation);
+		}
+		// extra move for first play
 		if (!isMoved) {
-			moves.add(new Location(changeRow(1), location.column));
 			moves.add(new Location(changeRow(2), location.column));
-		} else {
-			// piece ahead
-			Location newLocation = new Location(changeRow(1), location.column);
-			if (isLegalMove(newLocation)) {
-				moves.add(newLocation);
-			}
-			// piece diagonal
-			newLocation = new Location(changeRow(1), location.column + 1);
-			if (isLegalMove(newLocation)) {
-				moves.add(newLocation);
-			}
-			newLocation = new Location(changeRow(1), location.column - 1);
-			if (isLegalMove(newLocation)) {
-				moves.add(newLocation);
-			}
 		}
 		return moves;
 	}

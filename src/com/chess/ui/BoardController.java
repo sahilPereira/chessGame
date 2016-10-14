@@ -22,8 +22,12 @@ public class BoardController implements ActionListener {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			// reset view
 			view.clearGame();
 			view.setupNewGame();
+			// reset model
+			model.clearChessBoard();
+			model.initBoardModel();
 		}
 	};
 
