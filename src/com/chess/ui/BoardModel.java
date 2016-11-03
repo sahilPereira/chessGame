@@ -98,9 +98,17 @@ public class BoardModel {
 	public static Piece getCurrentPiece() {
 		return currentPiece;
 	}
+	
+	public static long getCurrentPieceIndex() {
+		return currentPieceIndex;
+	}
 
 	public static void setCurrentPiece(Piece currentPiece) {
 		BoardModel.currentPiece = currentPiece;
+	}
+	
+	public static void setCurrentPieceIndex(long currentIndex) {
+		BoardModel.currentPieceIndex = currentIndex;
 	}
 	
 	public void updateCurrentPiece(Location location){
@@ -115,5 +123,34 @@ public class BoardModel {
 		}
 		// reset for next selection
 		currentPiece = null;
+	}
+	
+	public void updateCurrentPieceIndex(long updatedPieceIndex){
+		// TODO: need to update one of the 6 piece bitboards
+		// Step 1: identify the bitboard requiring an update (bitwise & with old index)
+		// Step 2: set the old index value to zero in that particular bitboard
+		// Step 3: set the new index value to high in that particular bitboard
+		// Step 4: also update the appropriate color boards
+		
+//		Location oldLocation = currentPiece.location;
+//		chessBoard[oldLocation.row][oldLocation.column] = null;
+//		currentPiece.location = location;
+//		chessBoard[location.row][location.column] = currentPiece;
+//		
+//		if(currentPiece.id == PAWN && !oldLocation.equals(location)){
+//			Pawn pawn = (Pawn)currentPiece;
+//			pawn.setIsMoved(true);
+//		}
+		// reset for next selection
+		currentPiece = null;
+	}
+	
+	private int getPieceIndex(long currentIndex){
+		for(int i=0; i<bitBoards.length-2; i++){
+			if((bitBoards[i] & currentIndex) > 0){
+				return i;
+			}
+		}
+		return -1;
 	}
 }
