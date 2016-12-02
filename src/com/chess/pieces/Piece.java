@@ -18,6 +18,7 @@ public class Piece {
 		this.location = location;
 	}
 	
+	@Deprecated
 	public static List<Location> getMoves(Piece piece){
 		if(piece == null){
 			return new ArrayList<Location>();
@@ -41,6 +42,30 @@ public class Piece {
 		case BoardModel.PAWN:
 			Pawn pawn = (Pawn)piece;
 			return pawn.getMoves();
+		}
+		// should never get here
+		return null;
+	}
+	
+	// TODO: locations will be inferred from the index
+	public static List<Integer> getMoves(int pieceIndex){
+		if(pieceIndex<0 || pieceIndex>63){
+			return new ArrayList<Integer>();
+		}
+		switch (BoardModel.getBitBoardIndex(pieceIndex)) {
+		case BoardModel.ROOK:
+			Rook.getMoves(pieceIndex);
+			break;
+		case BoardModel.KNIGHT:
+			break;
+		case BoardModel.BISHOP:
+			break;
+		case BoardModel.KING:
+			break;
+		case BoardModel.QUEEN:
+			break;
+		case BoardModel.PAWN:
+			break;
 		}
 		// should never get here
 		return null;

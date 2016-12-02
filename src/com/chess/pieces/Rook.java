@@ -8,14 +8,17 @@ import com.chess.ui.Location;
 
 public class Rook extends Piece{
 	
+	@Deprecated
 	public Rook(int id, boolean isWhite, Location location){
 		super(id, isWhite, location);
 	}
 
+	@Deprecated
 	public Location getLocation() {
 		return location;
 	}
 
+	@Deprecated
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -26,6 +29,7 @@ public class Rook extends Piece{
 	 * 
 	 * return Location[]
 	 */
+	@Deprecated
 	public List<Location> getMoves() {
 		List<Location> moves = new ArrayList<Location>();
 		// bottom
@@ -73,5 +77,10 @@ public class Rook extends Piece{
 			}
 		}
 		return moves;
+	}
+	
+	public static List<Integer> getMoves(int pieceIndex) {
+		
+		return null;
 	}
 }

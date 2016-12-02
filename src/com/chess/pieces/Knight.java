@@ -7,6 +7,7 @@ import com.chess.ui.Location;
 
 public class Knight extends Piece {
 
+	@Deprecated
 	public Knight(int id, boolean isWhite, Location location) {
 		super(id, isWhite, location);
 	}
@@ -17,6 +18,7 @@ public class Knight extends Piece {
 	 * 
 	 * return Location[]
 	 */
+	@Deprecated
 	public List<Location> getMoves() {
 		List<Location> moves = new ArrayList<Location>();
 		List<Location> possibleMoves = new ArrayList<Location>();
@@ -35,5 +37,10 @@ public class Knight extends Piece {
 			}
 		}
 		return moves;
+	}
+	
+	public static List<Integer> getMoves(int pieceIndex) {
+		
+		return null;
 	}
 }

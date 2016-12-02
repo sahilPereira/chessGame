@@ -7,14 +7,17 @@ import com.chess.ui.Location;
 
 public class Bishop extends Piece{
 	
+	@Deprecated
 	public Bishop(int id, boolean isWhite, Location location){
 		super(id, isWhite, location);
 	}
 
+	@Deprecated
 	public Location getLocation() {
 		return location;
 	}
 
+	@Deprecated
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -25,6 +28,7 @@ public class Bishop extends Piece{
 	 * 
 	 * return Location[]
 	 */
+	@Deprecated
 	public List<Location> getMoves() {
 		List<Location> moves = new ArrayList<Location>();
 		// back right
@@ -48,5 +52,9 @@ public class Bishop extends Piece{
 			dx++;
 		}
 		return moves;
+	}
+	
+	public static List<Integer> getMoves(int pieceIndex) {
+		return null;
 	}
 }

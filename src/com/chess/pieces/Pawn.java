@@ -71,4 +71,7 @@ public class Pawn extends Piece {
 		return false;
 	}
 
+	public static List<Integer> getMoves(int pieceIndex) {
+		return null;
+	}
 }

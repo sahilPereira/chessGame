@@ -126,17 +126,27 @@ public class BoardModel {
 	}
 	
 	public void updateCurrentPieceIndex(long updatedPieceIndex){
+		// if new index is the same as the old index, no update needed
+		if(updatedPieceIndex == currentPieceIndex){
+			return;
+		}
 		// TODO: need to update one of the 6 piece bitboards
 		// Step 1: identify the bitboard requiring an update (bitwise & with old index)
+		int bitBoardIndex = getBitBoardIndex(currentPieceIndex);
+		int colorBoardIndex = getColorIndex(currentPieceIndex);
+		long currentBitBoard = bitBoards[bitBoardIndex];
+		long colourBoard = bitBoards[colorBoardIndex];
 		// Step 2: set the old index value to zero in that particular bitboard
+		currentBitBoard ^= (1 << currentPieceIndex);
 		// Step 3: set the new index value to high in that particular bitboard
+		currentBitBoard |= (1 << updatedPieceIndex);
 		// Step 4: also update the appropriate color boards
+		colourBoard ^= (1 << currentPieceIndex);
+		colourBoard |= (1 << updatedPieceIndex);
+		// Step 5: Update the actual board array
+		bitBoards[bitBoardIndex] = currentBitBoard;
+		bitBoards[colorBoardIndex] = colourBoard;
 		
-//		Location oldLocation = currentPiece.location;
-//		chessBoard[oldLocation.row][oldLocation.column] = null;
-//		currentPiece.location = location;
-//		chessBoard[location.row][location.column] = currentPiece;
-//		
 //		if(currentPiece.id == PAWN && !oldLocation.equals(location)){
 //			Pawn pawn = (Pawn)currentPiece;
 //			pawn.setIsMoved(true);
@@ -145,12 +155,18 @@ public class BoardModel {
 		currentPiece = null;
 	}
 	
-	private int getPieceIndex(long currentIndex){
-		for(int i=0; i<bitBoards.length-2; i++){
-			if((bitBoards[i] & currentIndex) > 0){
+	public static int getBitBoardIndex(long currentIndex) {
+		long currentPosition = 1L << currentIndex;
+		for (int i = 0; i < bitBoards.length - 2; i++) {
+			if ((bitBoards[i] & currentPosition) > 0) {
 				return i;
 			}
 		}
 		return -1;
+	}
+	
+	public static int getColorIndex(long currentIndex){
+		long currentPosition = 1L << currentIndex;
+		return ((bitBoards[BLK] & currentPosition) > 0) ? BLK : WHT; 
 	}
 }

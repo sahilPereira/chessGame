@@ -17,7 +17,7 @@ public class ChessMain {
 		long num3 = 0xA;
 		String value = "8000000000000000‬";
 		long long_FF = new BigInteger("ff", 16).longValue();
-		long num4 = long_FF << 8; // | long_FF << 48;
+		long num4 = long_FF ^ (1 << 2); // | long_FF << 48;
 		
 		long num5 = (1L << 63) | (1L << 3);
 		System.out.println(Long.toBinaryString(num4));

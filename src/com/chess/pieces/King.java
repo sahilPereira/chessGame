@@ -58,4 +58,8 @@ public class King extends Piece{
 		}
 		return false;
 	}
+	
+	public static List<Integer> getMoves(int pieceIndex) {
+		return null;
+	}
 }
