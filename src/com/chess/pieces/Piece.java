@@ -7,112 +7,117 @@ import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
 public class Piece {
-	
-	public int id;
-	public boolean isWhite;
-	public Location location;
-	
-	public Piece(int id, boolean isWhite, Location location){
-		this.id = id;
-		this.isWhite = isWhite;
-		this.location = location;
-	}
-	
-	@Deprecated
-	public static List<Location> getMoves(Piece piece){
-		if(piece == null){
-			return new ArrayList<Location>();
-		}
-		switch (piece.id) {
-		case BoardModel.ROOK:
-			Rook rook = (Rook)piece;
-			return rook.getMoves();
-		case BoardModel.KNIGHT:
-			Knight knight = (Knight)piece;
-			return knight.getMoves();
-		case BoardModel.BISHOP:
-			Bishop bishop = (Bishop)piece;
-			return bishop.getMoves();
-		case BoardModel.KING:
-			King king = (King)piece;
-			return king.getMoves();
-		case BoardModel.QUEEN:
-			Queen queen = (Queen)piece;
-			return queen.getMoves();
-		case BoardModel.PAWN:
-			Pawn pawn = (Pawn)piece;
-			return pawn.getMoves();
-		}
-		// should never get here
-		return null;
-	}
-	
-	// TODO: locations will be inferred from the index
-	public static List<Integer> getMoves(int pieceIndex){
-		if(pieceIndex<0 || pieceIndex>63){
-			return new ArrayList<Integer>();
-		}
-		switch (BoardModel.getBitBoardIndex(pieceIndex)) {
-		case BoardModel.ROOK:
-			Rook.getMoves(pieceIndex);
-			break;
-		case BoardModel.KNIGHT:
-			break;
-		case BoardModel.BISHOP:
-			break;
-		case BoardModel.KING:
-			break;
-		case BoardModel.QUEEN:
-			break;
-		case BoardModel.PAWN:
-			break;
-		}
-		// should never get here
-		return null;
-	}
 
-	public Piece getPieceOnBoard(Location location){
-		if(isOnBoard(location)){
-			return BoardModel.chessBoard[location.row][location.column];
-		}
-		return null;
-	}
-	
-	public boolean isOnBoard(Location location){
-		return(location.row >= 0 && location.row <= BoardModel.ROW_LIMIT)
-				&& (location.column >= 0 && location.column <= BoardModel.COLUMN_LIMIT);
-	}
+  public int id;
+  public boolean isWhite;
+  public Location location;
 
-	public int changeRow(int dRow) {
-		return this.isWhite ? this.location.row - dRow : this.location.row + dRow;
-	}
-	
-	public boolean isLegalMove(Location newLocation) {
-		if (newLocation == null) {
-			return false;
-		}
-		if(isOnBoard(newLocation)){
-			Piece pieceOnBoard = getPieceOnBoard(newLocation);
-			// "this" refers to the instantiated object, not necessarily this particular class
-			return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;
-		}
-		return false;
-	}
-	
-	public boolean isOpponentPiece(Location newLocation) {
-		Piece pieceOnBoard = getPieceOnBoard(newLocation);
-		return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;			
-	}
-	
-	public boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
-		Location newLocation = new Location(changeRow(dRow), location.column+dCol);
-		if (!isLegalMove(newLocation)) {
-			return false;
-		}
-		moves.add(newLocation);
-		if(isOpponentPiece(newLocation)){
-			return false;
-		}
-		return true;
-	}
+  public Piece(int id, boolean isWhite, Location location) {
+    this.id = id;
+    this.isWhite = isWhite;
+    this.location = location;
+  }
+
+  @Deprecated
+  public static List<Location> getMoves(Piece piece) {
+    if (piece == null) {
+      return new ArrayList<Location>();
+    }
+    switch (piece.id) {
+      case BoardModel.ROOK:
+        Rook rook = (Rook) piece;
+        return rook.getMoves();
+      case BoardModel.KNIGHT:
+        Knight knight = (Knight) piece;
+        return knight.getMoves();
+      case BoardModel.BISHOP:
+        Bishop bishop = (Bishop) piece;
+        return bishop.getMoves();
+      case BoardModel.KING:
+        King king = (King) piece;
+        return king.getMoves();
+      case BoardModel.QUEEN:
+        Queen queen = (Queen) piece;
+        return queen.getMoves();
+      case BoardModel.PAWN:
+        Pawn pawn = (Pawn) piece;
+        return pawn.getMoves();
+    }
+    // should never get here
+    return null;
+  }
+
+  // TODO: locations will be inferred from the index
+  public static List<Integer> getMoves(int pieceIndex) {
+    if (pieceIndex < 0 || pieceIndex > 63) {
+      return new ArrayList<Integer>();
+    }
+    switch (BoardModel.getBitBoardIndex(pieceIndex)) {
+      case BoardModel.ROOK:
+        Rook.getMoves(pieceIndex);
+        break;
+      case BoardModel.KNIGHT:
+        Knight.getMoves(pieceIndex);
+        break;
+      case BoardModel.BISHOP:
+        Bishop.getMoves(pieceIndex);
+        break;
+      case BoardModel.KING:
+        King.getMoves(pieceIndex);
+        break;
+      case BoardModel.QUEEN:
+        Queen.getMoves(pieceIndex);
+        break;
+      case BoardModel.PAWN:
+        Pawn.getMoves(pieceIndex);
+        break;
+    }
+    // should never get here
+    return null;
+  }
+
+  public Piece getPieceOnBoard(Location location) {
+    if (isOnBoard(location)) {
+      return BoardModel.chessBoard[location.row][location.column];
+    }
+    return null;
+  }
+
+  public boolean isOnBoard(Location location) {
+    return (location.row >= 0 && location.row <= BoardModel.ROW_LIMIT)
+        && (location.column >= 0 && location.column <= BoardModel.COLUMN_LIMIT);
+  }
+
+  public int changeRow(int dRow) {
+    return this.isWhite ? this.location.row - dRow : this.location.row + dRow;
+  }
+
+  public boolean isLegalMove(Location newLocation) {
+    if (newLocation == null) {
+      return false;
+    }
+    if (isOnBoard(newLocation)) {
+      Piece pieceOnBoard = getPieceOnBoard(newLocation);
+      // "this" refers to the instantiated object, not necessarily this particular class
+      return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;
+    }
+    return false;
+  }
+
+  public boolean isOpponentPiece(Location newLocation) {
+    Piece pieceOnBoard = getPieceOnBoard(newLocation);
+    return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;
+  }
+
+  public boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
+    Location newLocation = new Location(changeRow(dRow), location.column + dCol);
+    if (!isLegalMove(newLocation)) {
+      return false;
+    }
+    moves.add(newLocation);
+    if (isOpponentPiece(newLocation)) {
+      return false;
+    }
+    return true;
+  }
 }
