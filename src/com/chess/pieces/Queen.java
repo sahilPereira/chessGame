@@ -95,7 +95,7 @@ public class Queen extends Piece {
     return moves;
   }
 
-  public static List<Integer> getMoves(int pieceIndex) {
-    return null;
+  public static long getMoves(int pieceIndex) {
+    return 0L;
   }
 }

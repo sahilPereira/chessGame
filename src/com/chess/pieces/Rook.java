@@ -79,8 +79,8 @@ public class Rook extends Piece {
     return moves;
   }
 
-  public static List<Integer> getMoves(int pieceIndex) {
+  public static long getMoves(int pieceIndex) {
 
-    return null;
+    return 0L;
   }
 }

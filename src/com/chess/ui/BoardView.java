@@ -242,6 +242,25 @@ public class BoardView extends JPanel {
       litLocations.add(local);
     }
   }
+  
+  public void highlightTiles(long movesBitBoard) {
+
+    List<Integer> movesIndex = new ArrayList<>();
+    while(movesBitBoard > 0){
+      movesIndex.add(Long.numberOfTrailingZeros(movesBitBoard));
+      movesBitBoard &= movesBitBoard - 1;
+    }
+//     unhighlight old buttons
+    unhighlightLocations();
+    litLocations.clear();
+    for (Integer moveIndex : movesIndex) {
+      int rankIndex = moveIndex >> 3;
+      int fileIndex = moveIndex & 7;
+      JButton button = chessBoardSquares[rankIndex][fileIndex];
+      button.setBackground(Color.GREEN);
+      litLocations.add(new Location(rankIndex, fileIndex));
+    }
+  }
 
   private void unhighlightLocations() {
     for (Location local : litLocations) {

@@ -1,5 +1,6 @@
 package com.chess.pieces;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,9 @@ import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
 public class Piece {
+
+  public static final long NOT_FILE_A = new BigInteger("fefefefefefefefe", 16).longValue();
+  public static final long NOT_FILE_H = new BigInteger("7f7f7f7f7f7f7f7f", 16).longValue();
 
   public int id;
   public boolean isWhite;
@@ -48,32 +52,31 @@ public class Piece {
   }
 
   // TODO: locations will be inferred from the index
-  public static List<Integer> getMoves(int pieceIndex) {
+  public static long getMoves(int pieceIndex) {
     if (pieceIndex < 0 || pieceIndex > 63) {
-      return new ArrayList<Integer>();
+      return 0L;
     }
     switch (BoardModel.getBitBoardIndex(pieceIndex)) {
       case BoardModel.ROOK:
-        Rook.getMoves(pieceIndex);
+        // Rook.getMoves(pieceIndex);
         break;
       case BoardModel.KNIGHT:
-        Knight.getMoves(pieceIndex);
-        break;
+        return Knight.getMoves(pieceIndex);
       case BoardModel.BISHOP:
-        Bishop.getMoves(pieceIndex);
+        // Bishop.getMoves(pieceIndex);
         break;
       case BoardModel.KING:
         King.getMoves(pieceIndex);
         break;
       case BoardModel.QUEEN:
-        Queen.getMoves(pieceIndex);
+        // Queen.getMoves(pieceIndex);
         break;
       case BoardModel.PAWN:
-        Pawn.getMoves(pieceIndex);
+        // Pawn.getMoves(pieceIndex);
         break;
     }
     // should never get here
-    return null;
+    return 0L;
   }
 
   public Piece getPieceOnBoard(Location location) {
@@ -119,5 +122,11 @@ public class Piece {
       return false;
     }
     return true;
+  }
+
+  public static boolean isPieceWhite(int pieceIndex) {
+    long bitBoardIndex = 1L << pieceIndex;
+    long whiteBitBoard = BoardModel.bitBoards[BoardModel.WHT];
+    return (whiteBitBoard & bitBoardIndex) > 0;
   }
 }

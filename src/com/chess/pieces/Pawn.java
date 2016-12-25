@@ -1,12 +1,17 @@
 package com.chess.pieces;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
 public class Pawn extends Piece {
 
+  private static final long blackRank = new BigInteger("ff", 16).longValue() << 8;
+  private static final long whiteRank = new BigInteger("ff", 16).longValue() << 48;
+  
   private boolean isMoved;
 
   public Pawn(int id, boolean isWhite, Location location) {
@@ -45,10 +50,6 @@ public class Pawn extends Piece {
     return moves;
   }
 
-  public static List<Integer> getMoves(int pieceIndex) {
-    return null;
-  }
-
   public boolean isMoved() {
     return isMoved;
   }
@@ -73,5 +74,61 @@ public class Pawn extends Piece {
       }
     }
     return false;
+  }
+  
+  public static long getMoves(int pieceIndex) {
+
+    // NOTE: based on the colour, we need to AND with A-File or H-File
+    long bitBoardIndex = 1L << pieceIndex;
+    long eastFilter = NOT_FILE_A;
+    long westFilter = NOT_FILE_H;
+    long moveMask = 0L;
+    // get color mask
+    boolean isPieceWhite = isPieceWhite(pieceIndex);
+    long colorMask, opponentColorMask = 0L;
+    if(isPieceWhite){
+      colorMask = BoardModel.bitBoards[BoardModel.WHT];
+      opponentColorMask = BoardModel.bitBoards[BoardModel.BLK];
+      
+      moveMask |= (bitBoardIndex >> 9) & eastFilter;    
+      moveMask |= (bitBoardIndex >> 7) & westFilter;
+      moveMask &= opponentColorMask;
+      // forward move
+      moveMask |= bitBoardIndex >> 8;
+      if((whiteRank & bitBoardIndex) > 0){
+        moveMask |= bitBoardIndex >> 16;
+      }
+    } else{
+      colorMask = BoardModel.bitBoards[BoardModel.BLK];
+      opponentColorMask = BoardModel.bitBoards[BoardModel.WHT];
+      
+      moveMask |= (bitBoardIndex << 9) & eastFilter;    
+      moveMask |= (bitBoardIndex << 7) & westFilter;
+      moveMask &= opponentColorMask;
+      // forward move
+      moveMask |= bitBoardIndex << 8;
+      if((blackRank & bitBoardIndex) > 0){
+        moveMask |= bitBoardIndex << 16;
+      }
+    }
+
+    // west side moves
+    moveMask |= (bitBoardIndex << 9) & eastFilter;    
+    moveMask |= (bitBoardIndex << 7) & westFilter;
+    moveMask &= opponentColorMask;
+    // forward move
+    moveMask |= bitBoardIndex << 8;
+    if((whiteRank & bitBoardIndex) > 0){
+      
+    } else{
+      
+    }
+    // AND with the inverted color board so that own pieces are excluded
+    moveMask &= ~colorMask;
+    // add the current piece to highlight it
+    moveMask |= bitBoardIndex;
+    // TODO: remove println
+    System.out.println(Long.toBinaryString(moveMask));
+    return moveMask;
   }
 }

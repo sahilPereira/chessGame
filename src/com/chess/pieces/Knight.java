@@ -3,6 +3,7 @@ package com.chess.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
 public class Knight extends Piece {
@@ -39,8 +40,35 @@ public class Knight extends Piece {
     return moves;
   }
 
-  public static List<Integer> getMoves(int pieceIndex) {
+  public static long getMoves(int pieceIndex) {
 
-    return null;
+    // NOTE: based on the colour, we need to AND with A-File or H-File
+    long bitBoardIndex = 1L << pieceIndex;
+    System.out.println(Long.toBinaryString(bitBoardIndex));
+    long eastFilter = NOT_FILE_A;
+    long westFilter = NOT_FILE_H;
+    long moveMask = 0L;
+    // get color mask
+    boolean isPieceWhite = isPieceWhite(pieceIndex);
+    long colorMask = (isPieceWhite) ? BoardModel.bitBoards[BoardModel.WHT]
+        : BoardModel.bitBoards[BoardModel.BLK];
+
+    // west side moves
+    moveMask |= (bitBoardIndex << 17) & eastFilter;
+    moveMask |= (bitBoardIndex << 10) & eastFilter;
+    moveMask |= (bitBoardIndex >> 6) & eastFilter;
+    moveMask |= (bitBoardIndex >> 15) & eastFilter;
+    // east side moves
+    moveMask |= (bitBoardIndex << 15) & westFilter;
+    moveMask |= (bitBoardIndex << 6) & westFilter;
+    moveMask |= (bitBoardIndex >> 10) & westFilter;
+    moveMask |= (bitBoardIndex >> 17) & westFilter;
+    // AND with the inverted color board so that own pieces are excluded
+    moveMask &= ~colorMask;
+    // add the current piece to highlight it
+    moveMask |= bitBoardIndex;
+    // TODO: remove println
+    System.out.println(Long.toBinaryString(moveMask));
+    return moveMask;
   }
 }

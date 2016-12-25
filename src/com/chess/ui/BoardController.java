@@ -70,6 +70,10 @@ public class BoardController implements ActionListener {
     // recognize the piece using the chessBoard in the model
     BoardModel.setCurrentPiece(BoardModel.chessBoard[location.row][location.column]);
     List<Location> moves = Piece.getMoves(BoardModel.chessBoard[location.row][location.column]);
+    
+//    int pieceIndex = 8*location.row + location.column;
+//    long movesBoard = Piece.getMoves(pieceIndex);
+//    view.highlightTiles(movesBoard);
     // highlight current piece as well
     moves.add(location);
     System.out.println(moves.size());
