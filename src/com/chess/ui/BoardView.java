@@ -246,7 +246,7 @@ public class BoardView extends JPanel {
   public void highlightTiles(long movesBitBoard) {
 
     List<Integer> movesIndex = new ArrayList<>();
-    while(movesBitBoard > 0){
+    while(movesBitBoard != 0){
       movesIndex.add(Long.numberOfTrailingZeros(movesBitBoard));
       movesBitBoard &= movesBitBoard - 1;
     }

@@ -58,6 +58,9 @@ public class BoardController implements ActionListener {
         view.updateBoard(BoardModel.getCurrentPiece(), newLocation);
         // update model
         model.updateCurrentPiece(newLocation);
+        // update the bitboard models
+        int pieceIndex = 8*newLocation.row + newLocation.column;
+        model.updateCurrentPieceIndex(pieceIndex);
         return;
       }
       // TODO: remove later
@@ -71,13 +74,14 @@ public class BoardController implements ActionListener {
     BoardModel.setCurrentPiece(BoardModel.chessBoard[location.row][location.column]);
     List<Location> moves = Piece.getMoves(BoardModel.chessBoard[location.row][location.column]);
     
-//    int pieceIndex = 8*location.row + location.column;
-//    long movesBoard = Piece.getMoves(pieceIndex);
-//    view.highlightTiles(movesBoard);
+    int pieceIndex = 8*location.row + location.column;
+    BoardModel.setCurrentPieceIndex(pieceIndex);
+    long movesBoard = Piece.getMoves(pieceIndex);
+    view.highlightTiles(movesBoard);
     // highlight current piece as well
-    moves.add(location);
-    System.out.println(moves.size());
-    view.highlightTiles(moves);
+//    moves.add(location);
+//    System.out.println(moves.size());
+//    view.highlightTiles(moves);
 
     // Extra: highlight opponent pieces as red
   }

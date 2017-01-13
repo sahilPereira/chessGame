@@ -22,7 +22,7 @@ public class BoardModel {
   public static Piece[][] chessBoard = null;
   public static long[] bitBoards = null;
   private static Piece currentPiece = null;
-  private static long currentPieceIndex;
+  private static int currentPieceIndex;
 
   public BoardModel() {
     chessBoard = new Piece[ROW_LIMIT + 1][COLUMN_LIMIT + 1];
@@ -109,7 +109,7 @@ public class BoardModel {
     BoardModel.currentPiece = currentPiece;
   }
 
-  public static void setCurrentPieceIndex(long currentIndex) {
+  public static void setCurrentPieceIndex(int currentIndex) {
     BoardModel.currentPieceIndex = currentIndex;
   }
 
@@ -127,40 +127,77 @@ public class BoardModel {
     currentPiece = null;
   }
 
-  public void updateCurrentPieceIndex(long updatedPieceIndex) {
+  public void updateCurrentPieceIndex(int updatedPieceIndex) {
     // if new index is the same as the old index, no update needed
     if (updatedPieceIndex == currentPieceIndex) {
       return;
     }
-    // TODO: need to update one of the 6 piece bitboards
     // Step 1: identify the bitboard requiring an update (bitwise & with old index)
-    int bitBoardIndex = getBitBoardIndex(currentPieceIndex);
-    int colorBoardIndex = getColorIndex(currentPieceIndex);
-    long currentBitBoard = bitBoards[bitBoardIndex];
-    long colourBoard = bitBoards[colorBoardIndex];
+    int pieceBBIndex = getBitBoardIndex(currentPieceIndex);
+    int updatedPieceBBIndex = getBitBoardIndex(updatedPieceIndex);
+    int colorBBIndex = getColorIndex(currentPieceIndex);
+    long pieceBB = 0L, colourBB = 0L;
+    
+    // Step 6: check if new position intersects opponent piece
+    if (updatedPieceBBIndex >= 0) {
+      int opponentColorBBIndex = (colorBBIndex == BLK) ? WHT : BLK;
+      pieceBB = bitBoards[updatedPieceBBIndex];
+      colourBB = bitBoards[opponentColorBBIndex];
+      // set the old index value to zero in that particular bitboard
+      pieceBB ^= (1L << updatedPieceIndex);
+      // also toggle the appropriate color board position
+      colourBB ^= (1L << updatedPieceIndex);
+      // Update the actual board array
+      bitBoards[updatedPieceBBIndex] = pieceBB;
+      bitBoards[opponentColorBBIndex] = colourBB;
+    }
+    
+    pieceBB = bitBoards[pieceBBIndex];
+    colourBB = bitBoards[colorBBIndex];
+    
+//    System.out.println("Piece Index:");
+//    System.out.println("Current Piece Index: ["+currentPieceIndex+"]");
+//    System.out.println("Updated Piece Index: ["+updatedPieceIndex+"]");
+//    
+//    System.out.println("Original Bit Boards:");
+//    System.out.println("Piece BB Index: ["+pieceBBIndex+"], Board: "+Long.toBinaryString(pieceBB));
+//    System.out.println("Color BB Index: ["+colorBBIndex+"], Board: "+Long.toBinaryString(colourBB));
+    
+    
     // Step 2: set the old index value to zero in that particular bitboard
-    currentBitBoard ^= (1 << currentPieceIndex);
+    pieceBB ^= (1L << currentPieceIndex);
+//    System.out.println("Bit shift by currentPieceIndex: "+Long.toBinaryString(1L << currentPieceIndex));
+//    System.out.println("Reset current piece: "+Long.toBinaryString(pieceBB));
     // Step 3: set the new index value to high in that particular bitboard
-    currentBitBoard |= (1 << updatedPieceIndex);
+    pieceBB |= (1L << updatedPieceIndex);
+//    System.out.println("Bit shift by updatedPieceIndex: "+Long.toBinaryString(1L << updatedPieceBBIndex));
+//    System.out.println("Update new piece: "+Long.toBinaryString(pieceBB));
     // Step 4: also update the appropriate color boards
-    colourBoard ^= (1 << currentPieceIndex);
-    colourBoard |= (1 << updatedPieceIndex);
+    colourBB ^= (1L << currentPieceIndex);
+    colourBB |= (1L << updatedPieceIndex);
     // Step 5: Update the actual board array
-    bitBoards[bitBoardIndex] = currentBitBoard;
-    bitBoards[colorBoardIndex] = colourBoard;
+    bitBoards[pieceBBIndex] = pieceBB;
+    bitBoards[colorBBIndex] = colourBB;
 
-    // if(currentPiece.id == PAWN && !oldLocation.equals(location)){
-    // Pawn pawn = (Pawn)currentPiece;
-    // pawn.setIsMoved(true);
-    // }
+    // TODO: debug
+//    System.out.println("Update Bit Boards:");
+//    System.out.println("Piece BB Index: ["+pieceBBIndex+"], Board: "+Long.toBinaryString(pieceBB));
+//    System.out.println("Color BB Index: ["+colorBBIndex+"], Board: "+Long.toBinaryString(colourBB));
+    
+    // TODO: debug
+//    System.out.println("Bit Boards Side Effects:");
+//    System.out.println(Long.toBinaryString(bitBoards[pieceBBIndex]));
+//    System.out.println(Long.toBinaryString(bitBoards[colorIndex]));
+    
     // reset for next selection
+    currentPieceIndex = -1;
     currentPiece = null;
   }
 
   public static int getBitBoardIndex(long currentIndex) {
     long currentPosition = 1L << currentIndex;
     for (int i = 0; i < bitBoards.length - 2; i++) {
-      if ((bitBoards[i] & currentPosition) > 0) {
+      if ((bitBoards[i] & currentPosition) != 0) {
         return i;
       }
     }
@@ -169,6 +206,11 @@ public class BoardModel {
 
   public static int getColorIndex(long currentIndex) {
     long currentPosition = 1L << currentIndex;
-    return ((bitBoards[BLK] & currentPosition) > 0) ? BLK : WHT;
+    return ((bitBoards[BLK] & currentPosition) != 0) ? BLK : WHT;
+  }
+
+  public static boolean isPieceWhite(int pieceIndex) {
+    long bitBoardIndex = 1L << pieceIndex;
+    return (bitBoards[WHT] & bitBoardIndex) != 0;
   }
 }

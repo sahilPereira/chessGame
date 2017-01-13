@@ -11,7 +11,7 @@ public class Pawn extends Piece {
 
   private static final long blackRank = new BigInteger("ff", 16).longValue() << 8;
   private static final long whiteRank = new BigInteger("ff", 16).longValue() << 48;
-  
+
   private boolean isMoved;
 
   public Pawn(int id, boolean isWhite, Location location) {
@@ -75,56 +75,47 @@ public class Pawn extends Piece {
     }
     return false;
   }
-  
-  public static long getMoves(int pieceIndex) {
 
-    // NOTE: based on the colour, we need to AND with A-File or H-File
+  public static long getMoves(int pieceIndex) {
     long bitBoardIndex = 1L << pieceIndex;
-    long eastFilter = NOT_FILE_A;
-    long westFilter = NOT_FILE_H;
-    long moveMask = 0L;
-    // get color mask
+    long moveMask = 0L, colorMask = 0L, opponentColorMask = 0L, allPiecesMask = 0L;
     boolean isPieceWhite = isPieceWhite(pieceIndex);
-    long colorMask, opponentColorMask = 0L;
-    if(isPieceWhite){
+    
+    if (isPieceWhite) {
       colorMask = BoardModel.bitBoards[BoardModel.WHT];
       opponentColorMask = BoardModel.bitBoards[BoardModel.BLK];
-      
-      moveMask |= (bitBoardIndex >> 9) & eastFilter;    
-      moveMask |= (bitBoardIndex >> 7) & westFilter;
+
+      moveMask |= (bitBoardIndex >>> 9) & NOT_FILE_H;
+      moveMask |= (bitBoardIndex >>> 7) & NOT_FILE_A;
       moveMask &= opponentColorMask;
+      // get all positions
+      allPiecesMask = colorMask | opponentColorMask;
       // forward move
-      moveMask |= bitBoardIndex >> 8;
-      if((whiteRank & bitBoardIndex) > 0){
-        moveMask |= bitBoardIndex >> 16;
+      moveMask |= ~allPiecesMask & (bitBoardIndex >>> 8);
+      boolean hasExtraMove =
+          ((whiteRank & bitBoardIndex) != 0) & ((allPiecesMask & (bitBoardIndex >>> 8)) == 0);
+      if (hasExtraMove) {
+        moveMask |= ~allPiecesMask & (bitBoardIndex >>> 16);
       }
-    } else{
+    } else {
       colorMask = BoardModel.bitBoards[BoardModel.BLK];
       opponentColorMask = BoardModel.bitBoards[BoardModel.WHT];
-      
-      moveMask |= (bitBoardIndex << 9) & eastFilter;    
-      moveMask |= (bitBoardIndex << 7) & westFilter;
+
+      moveMask |= (bitBoardIndex << 9) & NOT_FILE_A;
+      moveMask |= (bitBoardIndex << 7) & NOT_FILE_H;
       moveMask &= opponentColorMask;
+      // get all positions
+      allPiecesMask = colorMask | opponentColorMask;
       // forward move
-      moveMask |= bitBoardIndex << 8;
-      if((blackRank & bitBoardIndex) > 0){
-        moveMask |= bitBoardIndex << 16;
+      moveMask |= ~allPiecesMask & (bitBoardIndex << 8);
+      boolean hasExtraMove =
+          ((blackRank & bitBoardIndex) != 0) & ((allPiecesMask & (bitBoardIndex << 8)) == 0);
+      if (hasExtraMove) {
+        moveMask |= ~allPiecesMask & (bitBoardIndex << 16);
       }
     }
-
-    // west side moves
-    moveMask |= (bitBoardIndex << 9) & eastFilter;    
-    moveMask |= (bitBoardIndex << 7) & westFilter;
-    moveMask &= opponentColorMask;
-    // forward move
-    moveMask |= bitBoardIndex << 8;
-    if((whiteRank & bitBoardIndex) > 0){
-      
-    } else{
-      
-    }
     // AND with the inverted color board so that own pieces are excluded
-    moveMask &= ~colorMask;
+//    moveMask &= ~colorMask;
     // add the current piece to highlight it
     moveMask |= bitBoardIndex;
     // TODO: remove println

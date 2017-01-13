@@ -75,13 +75,13 @@ public class King extends Piece {
     // west side moves
     moveMask |= (bitBoardIndex << 9) & eastFilter;
     moveMask |= (bitBoardIndex << 1) & eastFilter;
-    moveMask |= (bitBoardIndex >> 7) & eastFilter;    
+    moveMask |= (bitBoardIndex >>> 7) & eastFilter;    
     // east side moves
-    moveMask |= (bitBoardIndex >> 9) & westFilter;
-    moveMask |= (bitBoardIndex >> 1) & westFilter;
+    moveMask |= (bitBoardIndex >>> 9) & westFilter;
+    moveMask |= (bitBoardIndex >>> 1) & westFilter;
     moveMask |= (bitBoardIndex << 7) & westFilter;
     // top and bottom moves
-    moveMask |= bitBoardIndex >> 8;
+    moveMask |= bitBoardIndex >>> 8;
     moveMask |= bitBoardIndex << 8;
     // AND with the inverted color board so that own pieces are excluded
     moveMask &= ~colorMask;
