@@ -126,7 +126,7 @@ public class Piece {
   public static boolean isPieceWhite(int pieceIndex) {
     long bitBoardIndex = 1L << pieceIndex;
     long whiteBitBoard = BoardModel.bitBoards[BoardModel.WHT];
-    return (whiteBitBoard & bitBoardIndex) > 0;
+    return (whiteBitBoard & bitBoardIndex) != 0;
   }
   
   public static long eastMask(int pieceIndex){
