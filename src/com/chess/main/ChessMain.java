@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import com.chess.ui.BoardController;
 import com.chess.ui.BoardView;
 

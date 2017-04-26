@@ -94,8 +94,12 @@ public class Queen extends Piece {
     }
     return moves;
   }
-
+  
   public static long getMoves(int pieceIndex) {
-    return 0L;
+    // Get Rook moves
+    long moveMask = Rook.getMoves(pieceIndex);
+    // Get Bishop moves and OR with rook moves
+    moveMask |= Bishop.getMoves(pieceIndex);
+    return moveMask;
   }
 }
