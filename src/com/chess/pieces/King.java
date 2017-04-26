@@ -88,7 +88,7 @@ public class King extends Piece {
     // add the current piece to highlight it
     moveMask |= bitBoardIndex;
     // TODO: remove println
-    System.out.println(Long.toBinaryString(moveMask));
+//    System.out.println(Long.toBinaryString(moveMask));
     return moveMask;
   }
 }

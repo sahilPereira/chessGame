@@ -1,7 +1,6 @@
 package com.chess.pieces;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chess.ui.BoardModel;
@@ -19,35 +18,6 @@ public class Piece {
     this.id = id;
     this.isWhite = isWhite;
     this.location = location;
-  }
-
-  @Deprecated
-  public static List<Location> getMoves(Piece piece) {
-    if (piece == null) {
-      return new ArrayList<Location>();
-    }
-    switch (piece.id) {
-      case BoardModel.ROOK:
-        Rook rook = (Rook) piece;
-        return rook.getMoves();
-      case BoardModel.KNIGHT:
-        Knight knight = (Knight) piece;
-        return knight.getMoves();
-      case BoardModel.BISHOP:
-        Bishop bishop = (Bishop) piece;
-        return bishop.getMoves();
-      case BoardModel.KING:
-        King king = (King) piece;
-        return king.getMoves();
-      case BoardModel.QUEEN:
-        Queen queen = (Queen) piece;
-        return queen.getMoves();
-      case BoardModel.PAWN:
-        Pawn pawn = (Pawn) piece;
-        return pawn.getMoves();
-    }
-    // should never get here
-    return null;
   }
 
   // TODO: locations will be inferred from the index

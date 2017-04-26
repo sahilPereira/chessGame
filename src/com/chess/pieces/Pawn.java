@@ -80,7 +80,7 @@ public class Pawn extends Piece {
     long bitBoardIndex = 1L << pieceIndex;
     long moveMask = 0L, colorMask = 0L, opponentColorMask = 0L, allPiecesMask = 0L;
     boolean isPieceWhite = isPieceWhite(pieceIndex);
-    
+
     if (isPieceWhite) {
       colorMask = BoardModel.bitBoards[BoardModel.WHT];
       opponentColorMask = BoardModel.bitBoards[BoardModel.BLK];
@@ -115,11 +115,11 @@ public class Pawn extends Piece {
       }
     }
     // AND with the inverted color board so that own pieces are excluded
-//    moveMask &= ~colorMask;
+    // moveMask &= ~colorMask;
     // add the current piece to highlight it
     moveMask |= bitBoardIndex;
     // TODO: remove println
-    System.out.println(Long.toBinaryString(moveMask));
+//    System.out.println(Long.toBinaryString(moveMask));
     return moveMask;
   }
 }

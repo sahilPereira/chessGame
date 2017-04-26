@@ -72,7 +72,7 @@ public class BoardController implements ActionListener {
   private void highlightLegalMoves(Location location) {
     // recognize the piece using the chessBoard in the model
     BoardModel.setCurrentPiece(BoardModel.chessBoard[location.row][location.column]);
-    List<Location> moves = Piece.getMoves(BoardModel.chessBoard[location.row][location.column]);
+//    List<Location> moves = Piece.getMoves(BoardModel.chessBoard[location.row][location.column]);
     
     int pieceIndex = 8*location.row + location.column;
     BoardModel.setCurrentPieceIndex(pieceIndex);

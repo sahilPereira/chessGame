@@ -155,39 +155,16 @@ public class BoardModel {
     pieceBB = bitBoards[pieceBBIndex];
     colourBB = bitBoards[colorBBIndex];
     
-//    System.out.println("Piece Index:");
-//    System.out.println("Current Piece Index: ["+currentPieceIndex+"]");
-//    System.out.println("Updated Piece Index: ["+updatedPieceIndex+"]");
-//    
-//    System.out.println("Original Bit Boards:");
-//    System.out.println("Piece BB Index: ["+pieceBBIndex+"], Board: "+Long.toBinaryString(pieceBB));
-//    System.out.println("Color BB Index: ["+colorBBIndex+"], Board: "+Long.toBinaryString(colourBB));
-    
-    
     // Step 2: set the old index value to zero in that particular bitboard
     pieceBB ^= (1L << currentPieceIndex);
-//    System.out.println("Bit shift by currentPieceIndex: "+Long.toBinaryString(1L << currentPieceIndex));
-//    System.out.println("Reset current piece: "+Long.toBinaryString(pieceBB));
     // Step 3: set the new index value to high in that particular bitboard
     pieceBB |= (1L << updatedPieceIndex);
-//    System.out.println("Bit shift by updatedPieceIndex: "+Long.toBinaryString(1L << updatedPieceBBIndex));
-//    System.out.println("Update new piece: "+Long.toBinaryString(pieceBB));
     // Step 4: also update the appropriate color boards
     colourBB ^= (1L << currentPieceIndex);
     colourBB |= (1L << updatedPieceIndex);
     // Step 5: Update the actual board array
     bitBoards[pieceBBIndex] = pieceBB;
     bitBoards[colorBBIndex] = colourBB;
-
-    // TODO: debug
-//    System.out.println("Update Bit Boards:");
-//    System.out.println("Piece BB Index: ["+pieceBBIndex+"], Board: "+Long.toBinaryString(pieceBB));
-//    System.out.println("Color BB Index: ["+colorBBIndex+"], Board: "+Long.toBinaryString(colourBB));
-    
-    // TODO: debug
-//    System.out.println("Bit Boards Side Effects:");
-//    System.out.println(Long.toBinaryString(bitBoards[pieceBBIndex]));
-//    System.out.println(Long.toBinaryString(bitBoards[colorIndex]));
     
     // reset for next selection
     currentPieceIndex = -1;
