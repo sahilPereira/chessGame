@@ -3,8 +3,6 @@ package com.chess.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -14,8 +12,8 @@ import com.chess.pieces.Piece;
 
 public class BoardController implements ActionListener {
 
-  private static JButton oldBtnEvent = null;
-  private static Color oldColor = null;
+//  private static JButton oldBtnEvent = null;
+//  private static Color oldColor = null;
   private static BoardView view;
   private static BoardModel model;
   private Action newGameAction = new AbstractAction("New") {
@@ -52,7 +50,9 @@ public class BoardController implements ActionListener {
     Object chessObj = event.getSource();
     if (chessObj instanceof JButton) {
       JButton jButton = (JButton) chessObj;
-      if (BoardModel.getCurrentPiece() != null && jButton.getBackground() == Color.GREEN) {
+      Color tileBGColor = jButton.getBackground();
+      boolean isAllowedTile = (tileBGColor != Color.WHITE) && (tileBGColor != Color.BLACK);
+      if (BoardModel.getCurrentPiece() != null && isAllowedTile) {
         Location newLocation = Location.toLocation(jButton.getActionCommand());
         // update view
         view.updateBoard(BoardModel.getCurrentPiece(), newLocation);
@@ -77,7 +77,7 @@ public class BoardController implements ActionListener {
     int pieceIndex = 8*location.row + location.column;
     BoardModel.setCurrentPieceIndex(pieceIndex);
     long movesBoard = Piece.getMoves(pieceIndex);
-    view.highlightTiles(movesBoard);
+    view.highlightTiles(movesBoard, pieceIndex);
     // highlight current piece as well
 //    moves.add(location);
 //    System.out.println(moves.size());

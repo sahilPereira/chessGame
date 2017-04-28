@@ -1,8 +1,6 @@
 package com.chess.pieces;
 
 import java.math.BigInteger;
-import java.util.List;
-
 import com.chess.ui.BoardModel;
 import com.chess.ui.Location;
 
@@ -43,12 +41,12 @@ public class Piece {
     return 0L;
   }
 
-  public Piece getPieceOnBoard(Location location) {
-    if (isOnBoard(location)) {
-      return BoardModel.chessBoard[location.row][location.column];
-    }
-    return null;
-  }
+//  public Piece getPieceOnBoard(Location location) {
+//    if (isOnBoard(location)) {
+//      return BoardModel.chessBoard[location.row][location.column];
+//    }
+//    return null;
+//  }
 
   public boolean isOnBoard(Location location) {
     return (location.row >= 0 && location.row <= BoardModel.ROW_LIMIT)
@@ -59,34 +57,34 @@ public class Piece {
     return this.isWhite ? this.location.row - dRow : this.location.row + dRow;
   }
 
-  public boolean isLegalMove(Location newLocation) {
-    if (newLocation == null) {
-      return false;
-    }
-    if (isOnBoard(newLocation)) {
-      Piece pieceOnBoard = getPieceOnBoard(newLocation);
-      // "this" refers to the instantiated object, not necessarily this particular class
-      return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;
-    }
-    return false;
-  }
+//  public boolean isLegalMove(Location newLocation) {
+//    if (newLocation == null) {
+//      return false;
+//    }
+//    if (isOnBoard(newLocation)) {
+//      Piece pieceOnBoard = getPieceOnBoard(newLocation);
+//      // "this" refers to the instantiated object, not necessarily this particular class
+//      return (pieceOnBoard == null) || this.isWhite ^ pieceOnBoard.isWhite;
+//    }
+//    return false;
+//  }
 
-  public boolean isOpponentPiece(Location newLocation) {
-    Piece pieceOnBoard = getPieceOnBoard(newLocation);
-    return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;
-  }
+//  public boolean isOpponentPiece(Location newLocation) {
+//    Piece pieceOnBoard = getPieceOnBoard(newLocation);
+//    return (pieceOnBoard != null) ? this.isWhite ^ pieceOnBoard.isWhite : false;
+//  }
 
-  public boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
-    Location newLocation = new Location(changeRow(dRow), location.column + dCol);
-    if (!isLegalMove(newLocation)) {
-      return false;
-    }
-    moves.add(newLocation);
-    if (isOpponentPiece(newLocation)) {
-      return false;
-    }
-    return true;
-  }
+//  public boolean checkAndAdd(List<Location> moves, int dRow, int dCol) {
+//    Location newLocation = new Location(changeRow(dRow), location.column + dCol);
+//    if (!isLegalMove(newLocation)) {
+//      return false;
+//    }
+//    moves.add(newLocation);
+//    if (isOpponentPiece(newLocation)) {
+//      return false;
+//    }
+//    return true;
+//  }
 
   public static boolean isPieceWhite(int pieceIndex) {
     long bitBoardIndex = 1L << pieceIndex;

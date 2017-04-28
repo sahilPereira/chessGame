@@ -8,14 +8,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -243,21 +241,29 @@ public class BoardView extends JPanel {
     }
   }
   
-  public void highlightTiles(long movesBitBoard) {
+  public void highlightTiles(long movesBitBoard, int pieceIndex) {
 
+    long occupied = BoardModel.bitBoards[BoardModel.WHT] | BoardModel.bitBoards[BoardModel.BLK];
+    long intersecting = occupied & movesBitBoard;
+    
     List<Integer> movesIndex = new ArrayList<>();
     while(movesBitBoard != 0){
       movesIndex.add(Long.numberOfTrailingZeros(movesBitBoard));
       movesBitBoard &= movesBitBoard - 1;
     }
-//     unhighlight old buttons
+    // unhighlight old buttons
     unhighlightLocations();
     litLocations.clear();
+    
     for (Integer moveIndex : movesIndex) {
       int rankIndex = moveIndex >> 3;
       int fileIndex = moveIndex & 7;
       JButton button = chessBoardSquares[rankIndex][fileIndex];
-      button.setBackground(Color.GREEN);
+      boolean isAbleToCapture = ((1L << moveIndex) & intersecting) != 0;
+      button.setBackground((isAbleToCapture) ? Color.RED : Color.GREEN);
+      if(moveIndex == pieceIndex){
+        button.setBackground(Color.CYAN);
+      }
       litLocations.add(new Location(rankIndex, fileIndex));
     }
   }
