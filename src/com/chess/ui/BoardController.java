@@ -80,7 +80,7 @@ public class BoardController implements ActionListener {
     view.highlightTiles(movesBoard, pieceIndex);
     // highlight current piece as well
 //    moves.add(location);
-//    System.out.println(moves.size());
+    System.out.println(pieceIndex);
 //    view.highlightTiles(moves);
 
     // Extra: highlight opponent pieces as red
