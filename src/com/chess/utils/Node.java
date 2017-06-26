@@ -57,7 +57,6 @@ public class Node {
    * @return newly added move node
    */
   public Node addChild(short move) {
-    
     // first check if the parent contains this move
     Node node = getChildren(getSiblings(this)).stream()
         .filter(x -> (move == x.getMove()))
@@ -65,8 +64,6 @@ public class Node {
         .orElse(null);
     
     if(node != null){
-      // TODO: have to increment the number of occurrence of the move
-      // will need extra field for this
       node.setOccurrence(node.getOccurrence() + 1);
     } else{
       node = new Node(this);

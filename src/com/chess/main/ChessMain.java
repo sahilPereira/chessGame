@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import com.chess.ui.BoardController;
+import com.chess.utils.MoveTree;
 import com.chess.utils.Node;
 
 import chesspresso.game.Game;
@@ -31,37 +34,49 @@ public class ChessMain {
     // System.out.println(Long.toBinaryString(num4));
     // System.out.println(Long.toBinaryString(num5));
 
-    int[] colDiff = {-7, -5, -3, -1, 1, 3, 5, 7};
+    List<Integer> colDiff = Arrays.asList(-7, -5, -3, -1, 1, 3, 5, 7);
+//    List<Integer> colDiff = Arrays.asList(5, 54, 75, 7, 6, 2, 0, 89, 445, 1, 0, 57);
+//    
+//    List<Integer> moves = colDiff.stream()
+//        .sorted((n1, n2) -> Integer.compare(n2, n1))
+//        .collect(Collectors.toList());
+    
+//    System.out.println(moves.toArray());
+    
     File f;
     try {
-      f = new File("src/resources/book_2014.pgn");
-      FileInputStream fis = new FileInputStream(f);
-      PGNReader pgnReader = new PGNReader(fis, "src/resources/book_2014.pgn");
-      // Hack: we know there are only 120 games in the opening book
-      Node movesRoot = new Node(null);
-      movesRoot.setId("root");
-
-      Game game = pgnReader.parseGame();
-
-      List<Integer> movesAtDepth = new ArrayList<Integer>();
-      int maxMovesInAGame = 0;
-
-      int counter = 10;
-      while (game != null && counter > 0) {
-        addGameMoves(movesRoot, game, movesAtDepth);
-        // TODO: remove maxMovesInAGame after testing
-        maxMovesInAGame = Math.max(maxMovesInAGame, game.getNumOfMoves());
-
-        game = pgnReader.parseGame();
-        counter--;
-      }
-//      printTree(movesRoot, "-");
-      // FIXME: temp solution to account for the root node
-      movesAtDepth.add(0, 1);
-      printTreeDepthAverages(movesRoot, "-", movesAtDepth, 0);
-
-      System.out.println("Max moves in a game: " + maxMovesInAGame);
-      System.out.println("Depth of tree: " + movesAtDepth.size());
+//      f = new File("src/resources/book_2014.pgn");
+//      FileInputStream fis = new FileInputStream(f);
+//      PGNReader pgnReader = new PGNReader(fis, "src/resources/book_2014.pgn");
+//      // Hack: we know there are only 120 games in the opening book
+//      Node movesRoot = new Node(null);
+//      movesRoot.setId("root");
+//      
+//      Game game = pgnReader.parseGame();
+//
+//      List<Integer> movesAtDepth = new ArrayList<Integer>();
+//      int maxMovesInAGame = 0;
+//
+//      int counter = 20;
+//      while (game != null && counter > 0) {
+//        addGameMoves(movesRoot, game, movesAtDepth);
+//        // TODO: remove maxMovesInAGame after testing
+//        maxMovesInAGame = Math.max(maxMovesInAGame, game.getNumOfMoves());
+//
+//        game = pgnReader.parseGame();
+//        counter--;
+//      }
+////      printTree(movesRoot, "-");
+//      // FIXME: temp solution to account for the root node
+//      movesAtDepth.add(0, 1);
+//      printTreeDepthAverages(movesRoot, "-", movesAtDepth, 0);
+//
+//      System.out.println("Max moves in a game: " + maxMovesInAGame);
+//      System.out.println("Depth of tree: " + movesAtDepth.size());
+      
+      
+      
+      
     } catch (Exception e) {
       System.out.print("Error: \n");
       e.printStackTrace();
@@ -71,8 +86,15 @@ public class ChessMain {
 
       @Override
       public void run() {
+        
+        List<String> files = new ArrayList<String>();
+        files.add("src/resources/book_2014.pgn");
+//        files.add("src/resources/book_2015.pgn");
+//        files.add("src/resources/book_2016.pgn");
+        MoveTree movesTree = new MoveTree(files);
+        
         // BoardView cg = new BoardView();
-        BoardController controller = new BoardController();
+        BoardController controller = new BoardController(movesTree);
         controller.init();
 
         JFrame f = new JFrame("ChessChamp");

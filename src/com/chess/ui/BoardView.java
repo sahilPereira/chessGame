@@ -38,16 +38,17 @@ public class BoardView extends JPanel {
   private final JLabel message = new JLabel("Chess Champ is ready to play!");
   private static final String COLS = "ABCDEFGH";
   private Action newGameAction = null;
-  private final BoardController controller = new BoardController();
+  private final BoardController controller;
   private List<Location> litLocations;
 
   // public BoardView() {
   // initializeGui();
   // }
 
-  public BoardView(Action newGameAction) {
+  public BoardView(Action newGameAction, BoardController boardController) {
     this.newGameAction = newGameAction;
     this.setLitLocations(new ArrayList<Location>());
+    this.controller = boardController;
   }
 
   // TODO: might refactor the functional buttons out to BoardController
