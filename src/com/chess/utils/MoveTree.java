@@ -20,10 +20,10 @@ public class MoveTree {
   private List<String> openingBookFiles;
   private List<Integer> movesAtDepth = new ArrayList<Integer>();
   // control number of games used
-  private static final int MAX_NUM_GAMES = Integer.MAX_VALUE;
+  private static final int MAX_NUM_GAMES = 10; //Integer.MAX_VALUE;
   // control game size used
-  private static final int MAX_GAME_MOVES = 120;
-  private boolean isTreeUsable = true;
+  private static final int MAX_GAME_MOVES = 31;
+  private boolean isTreeUsable;
 
   public MoveTree(List<String> openingBookFiles) {
     this.rootNode = new Node(null);
@@ -52,10 +52,7 @@ public class MoveTree {
       buildMoveTree(pgnReader);
       
       // update the current move node to point to the root of all the games
-      Node rootGame = getRootNode().getChildren().stream().findFirst().orElse(null);
-      if(rootGame != null){
-        currentMoveNode = rootGame;
-      }
+      setupMoveTree();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -67,6 +64,17 @@ public class MoveTree {
 
   public void setTreeUsability(boolean isTreeUsable) {
     this.isTreeUsable = isTreeUsable;
+  }
+  
+  /**
+   * Reset the current Move Node to the root of all moves
+   */
+  public void setupMoveTree(){
+    Node rootGame = getRootNode().getChildren().stream().findFirst().orElse(null);
+    if(rootGame != null){
+      currentMoveNode = rootGame;
+    }
+    setTreeUsability(true);
   }
 
   /**
@@ -115,6 +123,7 @@ public class MoveTree {
     }
   }
 
+  @SuppressWarnings("unused")
   private void printTreeDepthAverages(Node node, String appender, int currentDepth) {
     String output = String.format("%s%s : %f", appender, node.getId(),
         ((double) node.getOccurrence()) / movesAtDepth.get(currentDepth));

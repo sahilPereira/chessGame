@@ -11,10 +11,10 @@ import com.chess.pieces.Queen;
 import com.chess.pieces.Rook;
 
 public class BoardModel {
-  public static final int QUEEN = 0, KING = 1, ROOK = 2, KNIGHT = 3, BISHOP = 4, PAWN = 5, BLK = 6,
+  public static final int KING = 0, QUEEN = 1, ROOK = 2, KNIGHT = 3, BISHOP = 4, PAWN = 5, BLK = 6,
       WHT = 7;
   public static final int[] STARTING_ROW =
-      {ROOK, KNIGHT, BISHOP, KING, QUEEN, BISHOP, KNIGHT, ROOK};
+      {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
   public static final int BLACK = 0, WHITE = 1;
   public static final int ROW_LIMIT = 7, COLUMN_LIMIT = 7;
 
@@ -51,8 +51,8 @@ public class BoardModel {
     }
 
     // TODO: finalize the long values and remove the above code
-    bitBoards[QUEEN] = 1L << 4 | 1L << 60;
-    bitBoards[KING] = 1L << 3 | 1L << 59;
+    bitBoards[KING] = 1L << 4 | 1L << 60;
+    bitBoards[QUEEN] = 1L << 3 | 1L << 59;
     bitBoards[ROOK] = 1L << 0 | 1L << 7 | 1L << 56 | 1L << 63;
     bitBoards[KNIGHT] = 1L << 1 | 1L << 6 | 1L << 57 | 1L << 62;
     bitBoards[BISHOP] = 1L << 2 | 1L << 5 | 1L << 58 | 1L << 61;

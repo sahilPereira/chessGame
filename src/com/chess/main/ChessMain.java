@@ -89,7 +89,7 @@ public class ChessMain {
         
         List<String> files = new ArrayList<String>();
         files.add("src/resources/book_2014.pgn");
-//        files.add("src/resources/book_2015.pgn");
+        files.add("src/resources/book_2015.pgn");
 //        files.add("src/resources/book_2016.pgn");
         MoveTree movesTree = new MoveTree(files);
         

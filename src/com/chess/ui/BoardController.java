@@ -3,11 +3,8 @@ package com.chess.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -44,6 +41,9 @@ public class BoardController implements ActionListener {
       // reset model
       model.clearChessBoard();
       model.initBoardModel();
+      // reset current move node to root node
+      movesTree.setupMoveTree();
+      // reset the currentPieceLocation
       currentPieceLocation = new Location(-1, -1);
     }
   };
@@ -80,7 +80,6 @@ public class BoardController implements ActionListener {
         // TODO: execute the opponent move based on current move
         // FIXME: use the current move to get the background color of the tile.
         // If the tile was red, that means we killed an opponent piece
-        boolean isCapturing = tileBGColor.equals(Color.RED);
         executeOpponentMove(currentPieceLocation, newLocation, tileBGColor.equals(Color.RED));
         return;
       }
