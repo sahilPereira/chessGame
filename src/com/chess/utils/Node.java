@@ -65,6 +65,12 @@ public class Node {
     
     if(node != null){
       node.setOccurrence(node.getOccurrence() + 1);
+      // TODO: even if this new node exists, the current node should point to it
+      boolean isChild = this.getChildren().stream().anyMatch(x -> (move == x.getMove()));
+      // if the current node was not pointing to this node before, now it should
+      if(!isChild){
+        this.getChildren().add(node);
+      }
     } else{
       node = new Node(this);
       node.setId(Move.getString(move));
